@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">衣橱整理</string>
+    <string name="app_name_start_screen">衣 橱\n整 理</string>
+    <string name="title_activity_navdrawer">衣橱整理</string>
+    <string name="email">电子邮件</string>
+    <string name="closet">衣橱</string>
+    <string name="calendar">日历</string>
+    <string name="shop">购物</string>
+    <string name="menu">菜单</string>
+    <string name="statistics">统计</string>
+    <string name="settings">设置</string>
+    <string name="help">帮助</string>
+    <string name="feedback">反馈</string>
+    <string name="itemcount">物品数量</string>
+    <string name="totalvalue">总价值</string>
+    <string name="mostwornitem">最常使用物品</string>
+    <string name="howtousethisapp">应用使用指南</string>
+    <string name="helpcontent">感谢你使用这款衣橱整理应用！ \n\n</string>
+    <string name="rating">您的评分将出现在这里。</string>
+    <string name="submit">提交</string>
+    <string name="yourrating">您的评分是：</string>
+    <string name="kind">大类:</string>
+    <string name="category">类别:</string>
+    <string name="email_feedback">给予反馈</string>
+    <string name="price">价格:</string>
+    <string name="worn">使用日期:</string>
+    <string name="season">季节:</string>
+    <string name="note">备注:</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+    <string name="selectdate">选择日期</string>
+    <string name="hint">满分5分</string>
+    <string name="delete">删除</string>
+    <string name="add">添加</string>
+    <string name="allitems">全部物品</string>
+    <string name="top">上装</string>
+    <string name="bottom">下装</string>
+    <string name="footwear">鞋类</string>
+    <string name="accessories">配饰</string>
+    <string name="camera">相机</string>
+    <string name="gallery">相册</string>
+    <string name="ok">好</string>
+    <string name="edit">编辑</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="yes">好</string>
+    <string name="no">不</string>
+    <string name="feedbackplaystore">您愿意在应用商店给我们打分吗？</string>
+    <string name="feedbackemail">您愿意告诉我们您的反馈意见吗？</string>
+    <string name="gender">性别</string>
+    <string name="language">语言</string>
+    <string name="startintro">这些信息将会帮助 \n我们更好地为您服务。 \n您可以随时在 \n菜单-设置 里更改。</string>
+    <string name="startintroland">这些信息将会帮助我们更好地为您服务。 \n您可以随时在菜单-设置 里更改。</string>
+    <string name="getstarted">开始</string>
+    <string name="helpcloset1">1) 在 衣橱 页面，选择大类和类别，可以看到您已添加的衣物；</string>
+    <string name="helpcloset2">2) 添加衣物到衣橱：点击右上角的相机/相册，拍摄或上传您衣物的照片；</string>
+    <string name="helpcloset3">3) 上传照片之后，填写衣物详细信息（包括衣物的大类、类别、价格和季节），然后点击 添加 按钮；</string>
+    <string name="helpcloset4">4) 现在上传后的照片显示在了衣橱里。随时点击照片查看衣物详细信息；</string>
+    <string name="helpcloset5">5) 在详细信息页面，点击 编辑 按钮来编辑。</string>
+    <string name="helpcalendar1">1) 点击任何一个日期来查看您为这天添加的衣物。</string>
+    <string name="helpcalendar2">2) 点击 添加 按钮为这天添加衣物。</string>
+    <string name="helpcalendar3">3) 点击您想删除的衣物，按 删除 按钮，这件物品将会从选中的这天删除。</string>
+    <string name="helpshop1">1) 进入亚马逊上页面购买。</string>
+    <string name="helpmenu1">1) 统计：为您分析您的衣橱，了解每个大类和类别的总数量和总价值。</string>
+    <string name="helpmenu2">2) 设置：修改您的语言设置。</string>
+    <string name="helpmenu3">3) 反馈：告诉我们您对这款应用的评价。再次感谢您下载它！</string>
+    <string name="emailhint">这将是您的论坛用户名</string>
+    <string name="doyouwanttoaddthisitemforthisdate">你想要在论坛发布这件衣物吗？</string>
+    <string name="imagealreadyselectedforthisdate">已为这天选择了图片</string>
+
+    <string name="savedsuccessfully">成功保存</string>
+    <string name="notsaved">未保存!!!</string>
+    <string name="deleteitem">删除物品</string>
+    <string name="areyousureyouwanttodeletethisitem">确定要删除这个物品吗？</string>
+    <string name="thankyou">感谢您！</string>
+    <string name="nomaybelater">以后再说。</string>
+
+    <string name="shopUrl">http://www.amazon.com.cn</string>
+
+    <string-array name="Kind">
+        <item>全部</item>
+        <item>上装</item>
+        <item>下装</item>
+        <item>鞋类</item>
+        <item>配饰</item>
+    </string-array>
+
+    <!-- remove "all" for AddItem and EditItem -->
+    <string-array name="Kind_no_all">
+        <item>上装</item>
+        <item>下装</item>
+        <item>鞋类</item>
+        <item>配饰</item>
+    </string-array>
+
+    <string-array name="Top">
+        <item>全部</item>
+        <item>西装</item>
+        <item>大衣和夹克</item>
+        <item>连衣裙</item>
+        <item>衬衫</item>
+        <item>毛衣</item>
+        <item>运动衫</item>
+        <item>T恤</item>
+    </string-array>
+
+    <string-array name="Top_no_all">
+        <item>西装</item>
+        <item>大衣和夹克</item>
+        <item>连衣裙</item>
+        <item>衬衫</item>
+        <item>毛衣</item>
+        <item>运动衫</item>
+        <item>T恤</item>
+    </string-array>
+
+    <string-array name="Bottom">
+        <item>全部</item>
+        <item>牛仔裤</item>
+        <item>短裤</item>
+        <item>半身裙</item>
+        <item>长裤</item>
+    </string-array>
+
+    <string-array name="Bottom_no_all">
+        <item>牛仔裤</item>
+        <item>短裤</item>
+        <item>半身裙</item>
+        <item>长裤</item>
+    </string-array>
+
+    <string-array name="Footwear">
+        <item>全部</item>
+        <item>运动鞋</item>
+        <item>靴子</item>
+        <item>平底鞋</item>
+        <item>高跟鞋</item>
+        <item>凉鞋</item>
+    </string-array>
+
+    <string-array name="Footwear_no_all">
+        <item>运动鞋</item>
+        <item>靴子</item>
+        <item>平底鞋</item>
+        <item>高跟鞋</item>
+        <item>凉鞋</item>
+    </string-array>
+
+    <string-array name="Accessories">
+        <item>全部</item>
+        <item>包袋</item>
+        <item>腰带</item>
+        <item>手套</item>
+        <item>帽子</item>
+        <item>首饰</item>
+        <item>围巾</item>
+        <item>袜子</item>
+        <item>墨镜</item>
+        <item>手表</item>
+    </string-array>
+
+    <string-array name="Accessories_no_all">
+        <item>包袋</item>
+        <item>腰带</item>
+        <item>手套</item>
+        <item>帽子</item>
+        <item>首饰</item>
+        <item>围巾</item>
+        <item>袜子</item>
+        <item>墨镜</item>
+        <item>手表</item>
+    </string-array>
+
+    <string-array name="Season">
+        <item>春季</item>
+        <item>夏季</item>
+        <item>秋季</item>
+        <item>冬季</item>
+    </string-array>
+
+    <string name="current_date">六月, 2016</string>
+    <string name="add_event">添加日历事件</string>
+    <string name="sun">日</string>
+    <string name="mon">一</string>
+    <string name="tue">二</string>
+    <string name="wed">三</string>
+    <string name="thu">四</string>
+    <string name="fri">五</string>
+    <string name="sat">六</string>
+    <string name="last_date">30</string>
+
+    <string name="set">设定</string>
+    <string name="view">查看</string>
+    <string name="gender_error">请选择性别</string>
+    <string name="email_error">请填写电子邮箱</string>
+    <string name="nodata">这天没有添加数据</string>
+
+    <string name="english">English</string>
+    <string name="forum">论坛</string>
+    <string name="post">发布</string>
+    <string name="uploadsucess">成功发布</string>
+    <string name="addimagedailog">您想要为这天添加衣物吗？</string>
+</resources>
