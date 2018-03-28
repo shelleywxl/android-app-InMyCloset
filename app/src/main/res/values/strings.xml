@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Organize Your Closet</string>
-    <string name="app_name_start_screen">Organize\nYour\nCloset</string>
+    <string name="app_name">In My Closet</string>
+    <string name="app_name_start_screen">In My\nCloset</string>
     <string name="title_activity_navdrawer">Organize Your Closet</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -18,7 +18,7 @@
     <string name="totalvalue">Total Value</string>
     <string name="mostwornitem">Most Worn Item</string>
     <string name="howtousethisapp">How to use this app?</string>
-    <string name="helpcontent">Thank you for using  Organize Your Closet  app!</string>
+    <string name="helpcontent">Thank you for using  In My Closet  app!</string>
     <string name="rating">Your rating will appear here.</string>
     <string name="submit">Submit</string>
     <string name="yourrating">Your rating is: </string>
