@@ -10,10 +10,12 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +34,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -124,6 +127,10 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
             }
         });
 
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
+
     }
 
     // for kind spinner
@@ -181,106 +188,145 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //cameraIntent.setType("image/*");
 
-//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
+//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
 
-        startActivityForResult(cameraIntent, 1);
+        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                Log.d(DEBUG_TAG, "IOException");
+            }
+            // continue only if the File was successfully created
+            Log.d(DEBUG_TAG, "callCamera, continued after the File was created");
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getActivity(), "com.example.android.organizeyourcloset.fileprovider", photoFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(cameraIntent, 1);
+            }
+        }
     }
 
-//    public Uri setImageUri() {
-//        File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "image" + new Date().getTime() + ".png");
-//        Uri imgUri = Uri.fromFile(file);
-//        this.imgPath = file.getAbsolutePath();
-//        return imgUri;
-//    }
-//    }
+
+    String imgPath;
+
+    public Uri setImageUri() {
+        File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "image" + new Date().getTime() + ".jpeg");
+        Uri imgUri = Uri.fromFile(file);
+        this.imgPath = file.getAbsolutePath();
+        return imgUri;
+    }
+
+    public String getImagePath() {
+        return imgPath;
+    }
+
+
+
+    /*
+        developer.android
+     */
+    String mCurrentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpeg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK)
-            return;
 
-        switch(requestCode) {
-            case 1:
+        if (requestCode == 1 && resultCode == RESULT_OK) {
 
-                String photoPath = "";
+//                Bundle extras = data.getExtras();
 
-                Bundle extras = data.getExtras();
+//                if (extras != null) {
+//                    //Bitmap yourImage = extras.getParcelable("data");
+//                    Bitmap yourImage = (Bitmap) extras.get("data");
 
-                if (extras != null) {
-                    //Bitmap yourImage = extras.getParcelable("data");
-                    Bitmap yourImage = (Bitmap) extras.get("data");
+//                    Uri uri = data.getData();
+//                    Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.ImageColumns.ORIENTATION}, MediaStore.Images.Media.DATE_ADDED, null, "date_added ASC");
+//                    if(cursor != null && cursor.moveToFirst())
+//                    {
+//                        do {
+//                            uri = Uri.parse(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
+//                            photoPath = uri.toString();
+//                        }while(cursor.moveToNext());
+//                        cursor.close();
+//                    }
 
-                    Uri uri = data.getData();
-                    Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.ImageColumns.ORIENTATION}, MediaStore.Images.Media.DATE_ADDED, null, "date_added ASC");
-                    if(cursor != null && cursor.moveToFirst())
-                    {
-                        do {
-                            uri = Uri.parse(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
-                            photoPath = uri.toString();
-                        }while(cursor.moveToNext());
-                        cursor.close();
-                    }
-                    // Photos rotate in some devices, rotate back
-                    try {
-                        File file = new File(photoPath);
-                        ExifInterface ei = new ExifInterface(file.getPath());
-                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-                        //                    Bitmap rotateBitmap = null;
-                        switch (orientation) {
-                            case ExifInterface.ORIENTATION_ROTATE_90:
-                                yourImage = rotateImage(yourImage, 90);
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_180:
-                                yourImage = rotateImage(yourImage, 180);
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_270:
-                                yourImage = rotateImage(yourImage, 270);
-                                break;
-                            case ExifInterface.ORIENTATION_NORMAL:
-                            default:
-                                yourImage = yourImage;
-                        }
-                    } catch (IOException e) {
-                        Log.w("TAG", "-- Error in setting image");
-                    } catch (OutOfMemoryError oom) {
-                        Log.w("TAG", "-- OOM Error in setting image");
-                    }
-
-
-                    // convert bitmap to byte
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    yourImage.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-                    byte byteArray1[] = stream.toByteArray();
-
-                    Intent intent1 = new Intent(getActivity(), ClosetItemActivity.class);
-                    intent1.putExtra("image", byteArray1);
-                    intent1.putExtra("add_show_edit", "add");
-                    startActivity(intent1);
-
+            Bitmap yourImage = decodeFile(mCurrentPhotoPath, 400);
+            // Photos rotate in some devices, rotate back
+            try {
+//                       File file = new File(photoPath);
+//                       ExifInterface ei = new ExifInterface(file.getPath());
+                ExifInterface ei = new ExifInterface(mCurrentPhotoPath);
+                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+                //                    Bitmap rotateBitmap = null;
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        yourImage = rotateImage(yourImage, 90);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        yourImage = rotateImage(yourImage, 180);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        yourImage = rotateImage(yourImage, 270);
+                        break;
+                    case ExifInterface.ORIENTATION_NORMAL:
+                    default:
+                        yourImage = yourImage;
                 }
-                break;
+            } catch (IOException e) {
+                Log.w("TAG", "-- Error in setting image");
+            } catch (OutOfMemoryError oom) {
+                Log.w("TAG", "-- OOM Error in setting image");
+            }
 
-            case 2:
-                if(resultCode == RESULT_OK){
-                    Uri choosenImage = data.getData();
 
-                    if(choosenImage !=null){
+            // convert bitmap to byte
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            yourImage.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+            byte byteArray1[] = stream.toByteArray();
 
-                        bp=decodeUri(choosenImage, 400);
-                        //image = profileImage(bp);   // image in byte[], passed to AddItemActivity
+            Intent intent1 = new Intent(getActivity(), ClosetItemActivity.class);
+            intent1.putExtra("image", byteArray1);
+            intent1.putExtra("add_show_edit", "add");
+            startActivity(intent1);
 
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bp.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-                        byte[] byteArray2 = stream.toByteArray();
+        } else if (requestCode == 2 && resultCode == RESULT_OK) {
 
-                        Intent intent2 = new Intent(getActivity(), ClosetItemActivity.class);
-                        intent2.putExtra("image", byteArray2);
-                        intent2.putExtra("add_show_edit", "add");
-                        startActivity(intent2);
+            Uri choosenImage = data.getData();
 
-                    }
-                    break;
-                }
+            if(choosenImage !=null){
+
+                bp=decodeUri(choosenImage, 400);
+                //image = profileImage(bp);   // image in byte[], passed to AddItemActivity
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bp.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                byte[] byteArray2 = stream.toByteArray();
+
+                Intent intent2 = new Intent(getActivity(), ClosetItemActivity.class);
+                intent2.putExtra("image", byteArray2);
+                intent2.putExtra("add_show_edit", "add");
+                startActivity(intent2);
+
+            }
         }
     }
 
@@ -329,6 +375,33 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
         }
         return null;
     }
+
+
+    // convert photo path to Bitmap
+    public Bitmap decodeFile(String path, int REQUIRED_SIZE) {
+        try {
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, o);
+            // The new size we want to scale to
+            //final int REQUIRED_SIZE = 400;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while (o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE)
+                scale *= 2;
+
+            // Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            return BitmapFactory.decodeFile(path, o2);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     //Convert bitmap to bytes
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)

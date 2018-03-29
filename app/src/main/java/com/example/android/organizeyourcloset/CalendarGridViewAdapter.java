@@ -70,17 +70,21 @@ public class CalendarGridViewAdapter extends ArrayAdapter<Date> {
         DatabaseHandler db = new DatabaseHandler(getContext());
         view.setBackgroundResource(0);
 
-        if (addedDateSet.isEmpty() != true) {
+        Log.d(DEBUG_TAG, "addedDateSet" + addedDateSet);
+
+        if (! addedDateSet.isEmpty()) {
 
             for (String addedDate : addedDateSet) {
 
-                Log.d(DEBUG_TAG, "String addedDate: " + addedDate);
+                if (addedDate == null) {
+                    continue;
+                }
 
                 String formatAddedMonth = addedDate.substring(0,3);
                 String formatAddedDay = addedDate.substring(4,6);
                 String formatAddedYear = addedDate.substring(8);
 
-                Log.d(DEBUG_TAG, "mdy: " + formatAddedMonth + formatAddedDay + formatAddedYear);
+//                Log.d(DEBUG_TAG, "mdy: " + formatAddedMonth + formatAddedDay + formatAddedYear);
 //                addedDateDate = db.convertStringToDate(addedDate);
 //
 //                SimpleDateFormat addedDateFormatDay = new SimpleDateFormat("d");
