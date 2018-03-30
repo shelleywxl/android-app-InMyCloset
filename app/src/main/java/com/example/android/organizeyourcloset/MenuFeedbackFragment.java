@@ -68,7 +68,7 @@ public class MenuFeedbackFragment extends Fragment {
                         public void onClick(View view) {
                             Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setData(Uri.parse("mailto:"));
-                            String[] to = {"r2bhandari@scu.edu", "xwu2@scu.edu", "nsohagiya@scu.edu"};
+                            String[] to = {"shelleywxlapp@gmail.com"};
                             intent.putExtra(Intent.EXTRA_EMAIL, to);
                             intent.putExtra(Intent.EXTRA_SUBJECT, "App Feedback");
                             intent.setType("message/rfc822");
