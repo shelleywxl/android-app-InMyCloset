@@ -49,7 +49,6 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
     private GridView gridView;
     private GridViewAdapter gridAdapter;
     private Bitmap bp;
-//    private byte[] image;
 
     Spinner spinner1,spinner2;
     @Nullable
@@ -71,12 +70,10 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
 
         int id= item.getItemId();
         //ActionBar Click handling
-        if(id==R.id.ac_camera)
-        {
+        if(id==R.id.ac_camera) {
             callCamera();
         }
-        if(id==R.id.ac_gallery)
-        {
+        if(id==R.id.ac_gallery) {
             callGallery();
         }
         return super.onOptionsItemSelected(item);
@@ -91,8 +88,6 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         // super.onActivityCreated(savedInstanceState);
-
-        Log.d(DEBUG_TAG, "onViewCreated");
 
         spinner1 = getView().findViewById(R.id.spinner1);
         spinner2 = getView().findViewById(R.id.spinner2);
@@ -186,9 +181,6 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
 
     public void callCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //cameraIntent.setType("image/*");
-
-//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
 
         if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             File photoFile = null;
@@ -210,22 +202,6 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
 
     String imgPath;
 
-    public Uri setImageUri() {
-        File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "image" + new Date().getTime() + ".jpeg");
-        Uri imgUri = Uri.fromFile(file);
-        this.imgPath = file.getAbsolutePath();
-        return imgUri;
-    }
-
-    public String getImagePath() {
-        return imgPath;
-    }
-
-
-
-    /*
-        developer.android
-     */
     String mCurrentPhotoPath;
 
     private File createImageFile() throws IOException {
@@ -245,35 +221,14 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
 
-//                Bundle extras = data.getExtras();
-
-//                if (extras != null) {
-//                    //Bitmap yourImage = extras.getParcelable("data");
-//                    Bitmap yourImage = (Bitmap) extras.get("data");
-
-//                    Uri uri = data.getData();
-//                    Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.ImageColumns.ORIENTATION}, MediaStore.Images.Media.DATE_ADDED, null, "date_added ASC");
-//                    if(cursor != null && cursor.moveToFirst())
-//                    {
-//                        do {
-//                            uri = Uri.parse(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
-//                            photoPath = uri.toString();
-//                        }while(cursor.moveToNext());
-//                        cursor.close();
-//                    }
-
             Bitmap yourImage = decodeFile(mCurrentPhotoPath, 400);
             // Photos rotate in some devices, rotate back
             try {
-//                       File file = new File(photoPath);
-//                       ExifInterface ei = new ExifInterface(file.getPath());
                 ExifInterface ei = new ExifInterface(mCurrentPhotoPath);
                 int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
                 //                    Bitmap rotateBitmap = null;
@@ -296,7 +251,6 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
             } catch (OutOfMemoryError oom) {
                 Log.w("TAG", "-- OOM Error in setting image");
             }
-
 
             // convert bitmap to byte
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -349,9 +303,6 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
             o.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(selectedImage), null, o);
 
-            // The new size we want to scale to
-            // final int REQUIRED_SIZE =  size;
-
             // Find the correct scale value. It should be the power of 2.
             int width_tmp = o.outWidth, height_tmp = o.outHeight;
             int scale = 1;
@@ -384,8 +335,6 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
             BitmapFactory.Options o = new BitmapFactory.Options();
             o.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(path, o);
-            // The new size we want to scale to
-            //final int REQUIRED_SIZE = 400;
 
             // Find the correct scale value. It should be the power of 2.
             int scale = 1;
@@ -422,7 +371,7 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
 
         gridView = (GridView) getActivity().findViewById(R.id.gridview);
 
-        gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, itemArray);//an arraylist of );
+        gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, itemArray);
         gridView.setAdapter(gridAdapter);
 
         // set click listener for each image in the grid view, will open ShowItemFragment
@@ -431,7 +380,7 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 Item item = (Item) parent.getItemAtPosition(position);
-                // pass the item id as an intent to C;psetItemActivity
+                // pass the item id as an intent to ClosetItemActivity
                 Intent intent = new Intent(getActivity(), ClosetItemActivity.class);
                 intent.putExtra("item_id", item.getID());
                 intent.putExtra("add_show_edit", "show");

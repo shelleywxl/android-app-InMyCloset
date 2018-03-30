@@ -265,22 +265,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    // Convert string to date
-    // Used in CalendarGridViewAdapter
-    public Date convertStringToDate(String input) {
-        Date date= null;
-        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
-
-        try {
-            date=dateFormat.parse(input);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return date;
-    }
-
-
     // Get the total count of items in the chosen kind
     // Used in MenuStatistics
     public int getCount(String kind) {

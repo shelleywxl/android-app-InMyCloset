@@ -25,14 +25,13 @@ import java.util.List;
 
 public class CalendarGridViewAdapter extends ArrayAdapter<Date> {
 
-    private static final String DEBUG_TAG = "CalendarGridviewAdapter";
-
     // for view inflation
     private LayoutInflater inflater;
     private List<Date> days;
     private Calendar currentDate;
     private HashSet<String> addedDateSet;
-    private Date addedDateDate;
+
+    private int mselectedPosition;
 
     public CalendarGridViewAdapter(Context context, ArrayList<Date> days, Calendar currentDate, HashSet<String> addedDateSet) {
         super(context, R.layout.control_calendar_day, days);
@@ -67,10 +66,7 @@ public class CalendarGridViewAdapter extends ArrayAdapter<Date> {
             view = inflater.inflate(R.layout.control_calendar_day, parent, false);
 
         // if this day has an event, specify event image
-        DatabaseHandler db = new DatabaseHandler(getContext());
         view.setBackgroundResource(0);
-
-        Log.d(DEBUG_TAG, "addedDateSet" + addedDateSet);
 
         if (! addedDateSet.isEmpty()) {
 
@@ -83,16 +79,6 @@ public class CalendarGridViewAdapter extends ArrayAdapter<Date> {
                 String formatAddedMonth = addedDate.substring(0,3);
                 String formatAddedDay = addedDate.substring(4,6);
                 String formatAddedYear = addedDate.substring(8);
-
-//                Log.d(DEBUG_TAG, "mdy: " + formatAddedMonth + formatAddedDay + formatAddedYear);
-//                addedDateDate = db.convertStringToDate(addedDate);
-//
-//                SimpleDateFormat addedDateFormatDay = new SimpleDateFormat("d");
-//                SimpleDateFormat addedDateFormatMonth = new SimpleDateFormat("MMM");
-//                SimpleDateFormat addedDateFormatYear = new SimpleDateFormat("yyyy");
-//                String formatAddedDay = addedDateFormatDay.format(addedDateDate);
-//                String formatAddedMonth = addedDateFormatMonth.format(addedDateDate);
-//                String formatAddedYear = addedDateFormatYear.format(addedDateDate);
 
                 if (formatDay.equals(formatAddedDay) &&
                         formatMonth.equals(formatAddedMonth) &&
@@ -120,6 +106,18 @@ public class CalendarGridViewAdapter extends ArrayAdapter<Date> {
         // set text
         ((TextView)view).setText(String.valueOf(date.getDate()));
 
+
+        // for highlighting selected day to colorPrimaryDarkest
+        if (position == mselectedPosition)
+            ((TextView)view).setTextColor(getContext().getResources().getColor(R.color.colorPrimaryDarkest));
+
         return view;
     }
+
+
+    // for highlighting background of the selected day
+    public void setSelectedPosition(int position) {
+        mselectedPosition = position;
+    }
+
 }

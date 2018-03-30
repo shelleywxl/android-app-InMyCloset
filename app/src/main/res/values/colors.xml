@@ -8,4 +8,5 @@
     <color name="colorPrimaryLightest">#FFCCBC</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorGrey">#808080</color>
+    <color name="colorTransparent">#00FFFFFF</color>
 </resources>

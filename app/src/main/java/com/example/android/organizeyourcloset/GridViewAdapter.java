@@ -17,6 +17,7 @@ public class GridViewAdapter extends ArrayAdapter {
     private Context context;
     private int layoutResourceId;
     private ArrayList<Item> data = new ArrayList<Item>();
+    private int mSelectedPosition = -1;
 
     public GridViewAdapter(Context context, int layoutResourceId, ArrayList data) {
         super(context, layoutResourceId, data);
@@ -46,10 +47,17 @@ public class GridViewAdapter extends ArrayAdapter {
 
         holder.image_view.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
 
+        if (position == mSelectedPosition)
+            holder.image_view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
+
         return row;
     }
 
     static class ViewHolder {
         ImageView image_view;
+    }
+
+    public void setSelectedPosition(int position) {
+        mSelectedPosition = position;
     }
 }

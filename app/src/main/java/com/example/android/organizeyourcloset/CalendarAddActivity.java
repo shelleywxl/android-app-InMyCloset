@@ -187,6 +187,9 @@ public class CalendarAddActivity extends AppCompatActivity implements AdapterVie
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 chosenItem = (Item) parent.getItemAtPosition(position);
+
+                gridAdapter.setSelectedPosition(position);
+                gridAdapter.notifyDataSetChanged();
             }
         });
     }

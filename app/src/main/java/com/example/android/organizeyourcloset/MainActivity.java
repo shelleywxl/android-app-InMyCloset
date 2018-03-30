@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onCreate (Bundle savedInstanceState){
+    protected void onCreate (Bundle savedInstanceState) {
 
         setLocale(lang);
         super.onCreate(savedInstanceState);
@@ -65,81 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editor.putBoolean(welcomeScreenShownPref, true);
             editor.commit();
         }
-
-
-//        final Handler handler= new Handler();
-//        Timer timer = new Timer();
-//        int i1=0;
-//
-//        TimerTask doasynctask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                handler.post(new Runnable() {
-//                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-//                    @SuppressWarnings("unchecked")
-//                    public void run() {
-//
-//                        try{
-//                            Date date = new Date();
-//
-//                            String check = DateFormat.getDateInstance(DateFormat.MEDIUM).format(date);
-//
-//                            boolean result= db.checking(check);
-//
-//                            if(result=true)
-//                            {
-//                                NotificationManager manager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                                String channel_id="mychannel";
-//                                CharSequence name =" channel";
-//                                String Description= "THis is sparta";
-//                                int importance =NotificationManager.IMPORTANCE_HIGH;
-//
-//                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//
-//                                    NotificationChannel nchannel= new NotificationChannel(channel_id,name,importance);
-//                                    nchannel.setDescription(Description);
-//                                    nchannel.enableLights(true);
-//                                    nchannel.setLightColor(Color.RED);
-//                                    nchannel.enableVibration(true);
-//                                    nchannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-//                                    nchannel.setShowBadge(false);
-//                                    manager.createNotificationChannel(nchannel);
-//                                }
-//
-//
-//                                NotificationCompat.Builder notification= new NotificationCompat.Builder(getBaseContext(),channel_id);
-//                                notification.setContentTitle(String.valueOf(R.string.app_name));
-//                                notification.setContentText("Check this out");
-//                                notification.setSmallIcon(R.mipmap.ic_launcher_round);
-//
-//                                Intent notifyintent= new Intent(MainActivity.this,viewdate.class);
-//                                TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
-//                                stackBuilder.addParentStack(MainActivity.class);
-//                                stackBuilder.addNextIntent(notifyintent);
-//                                notifyintent.putExtra("selected",check);
-//                                PendingIntent pendingIntent= stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
-//                                notification.setContentIntent(pendingIntent);
-//                                manager.notify(0,notification.build());
-//                            }
-//                        }
-//                        catch (Exception e)
-//                        {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-//            }
-//        };
-
-//        Date date= new Date();
-//        int a= date.getHours();
-//        int b= date.getMinutes();
-//        int c =date.getHours();
-//
-//        long delay = (a*3600000)+(b*60000)+(c*1000);
-//        delay= 86400000-delay+25200000;
-//        timer.schedule(doasynctask,delay,86400000);
     }
+
 
     private void findviewByid() {
         btnstart = (Button) findViewById(R.id.getStarted);

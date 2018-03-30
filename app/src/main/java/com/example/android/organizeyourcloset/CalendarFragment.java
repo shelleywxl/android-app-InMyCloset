@@ -44,10 +44,6 @@ public class CalendarFragment extends Fragment {
     // default date format
     private static final String DATE_FORMAT = "MMM yyyy";
 
-    // date format
-    //private String dateFormat;
-    //private SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
-
     // calendar view
     private ImageView btnPrev, btnNext;
     private TextView txtDate, txtChosenDate;
@@ -155,26 +151,6 @@ public class CalendarFragment extends Fragment {
                 }
             }
         });
-
-        // click a date in the calendar grid
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Date date = (Date)parent.getItemAtPosition(position);
-                chosenDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(date);
-                txtChosenDate.setText(chosenDate);
-                showItemInGrid(chosenDate);
-            }
-        });
-
-        // click an item in the image gridview
-        calendarImageGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                btnDelete.setEnabled(true);
-                chosenItem = (Item) parent.getItemAtPosition(position);
-            }
-        });
     }
 
 
@@ -198,13 +174,27 @@ public class CalendarFragment extends Fragment {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        // update grid, showing marks for dates with clothes
-        grid.setAdapter(new CalendarGridViewAdapter(getContext(), cells, currentDate, addedDateSet));
-
         // update title
-        //DateFormat df = SimpleDateFormat.getDateInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         txtDate.setText(sdf.format(currentDate.getTime()));
+
+        // update grid, showing marks for dates with clothes
+        final CalendarGridViewAdapter calendarGridviewAdapter = new CalendarGridViewAdapter(getContext(), cells, currentDate, addedDateSet);
+        grid.setAdapter(calendarGridviewAdapter);
+
+        // click a date in the calendar grid
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Date date = (Date)parent.getItemAtPosition(position);
+                chosenDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(date);
+                txtChosenDate.setText(chosenDate);
+                showItemInGrid(chosenDate);
+
+                calendarGridviewAdapter.setSelectedPosition(position);
+                calendarGridviewAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 
@@ -212,8 +202,20 @@ public class CalendarFragment extends Fragment {
     private void showItemInGrid(String chosenDate) {
         ArrayList<Item> itemArray = new ArrayList<Item>();
         itemArray.addAll(db.getWornItems(chosenDate));
-        GridViewAdapter gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, itemArray);
+        final GridViewAdapter gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, itemArray);
         calendarImageGridview.setAdapter(gridAdapter);
+
+        // click an item in the image gridview
+        calendarImageGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                btnDelete.setEnabled(true);
+                chosenItem = (Item) parent.getItemAtPosition(position);
+
+                gridAdapter.setSelectedPosition(position);
+                gridAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 }
