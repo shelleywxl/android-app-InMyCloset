@@ -156,15 +156,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    // Delete a single item in TABLE_ITEMS
+    // Delete a single item in TABLE_ITEMS, also delete in TABLE_WORN
     // Used in ClosetEditItem
     public void deleteItem(int Id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ITEMS, KEY_ID + " = ?", new String[] { String.valueOf(Id) });
+        db.delete(TABLE_WORN, KEY_ITEMID + " = ?", new String[] { String.valueOf(Id) });
         db.close();
     }
 
 
+    // ----------
     // Add items in TABLE_WORN
     // Used in CalendarAdd
     public void addInWorn(Integer itemid, String date) {
