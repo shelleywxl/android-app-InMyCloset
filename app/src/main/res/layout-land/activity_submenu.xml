@@ -22,7 +22,7 @@
 
         <fragment
             android:id="@+id/menu_fragment"
-            class="com.example.android.organizeyourcloset.MenuFragment"
+            class="io.github.xueluwu.android.organizeyourcloset.MenuFragment"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">

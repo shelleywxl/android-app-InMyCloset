@@ -4,6 +4,9 @@
     <string name="app_name">衣橱整理</string>
     <string name="app_name_start_screen">衣 橱\n整 理</string>
     <string name="title_activity_navdrawer">衣橱整理</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
     <string name="email">电子邮件</string>
     <string name="closet">衣橱</string>
     <string name="calendar">日历</string>

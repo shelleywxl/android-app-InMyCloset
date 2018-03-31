@@ -195,9 +195,6 @@
     <string name="doyouwanttoaddthisitemforthisdate">Do you want to post this item into Forum?</string>
     <string name="imagealreadyselectedforthisdate">Image already selected for this date</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="set"> Set</string>
     <string name="view">View</string>
     <string name="gender_error">Please select the Gender</string>
