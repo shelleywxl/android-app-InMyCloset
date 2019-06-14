@@ -11,6 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import io.github.xueluwu.android.organizeyourcloset.Calendar.CalendarActivity;
+import io.github.xueluwu.android.organizeyourcloset.Closet.ClosetActivity;
+import io.github.xueluwu.android.organizeyourcloset.Menu.MenuActivity;
+import io.github.xueluwu.android.organizeyourcloset.Shop.ShopActivity;
+
 
 /**
  * Any activity that extends NavDrawerActivity will have the navigation drawer

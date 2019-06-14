@@ -13,11 +13,10 @@
 
     <TextView
         android:id="@+id/menu_text"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
 </LinearLayout>

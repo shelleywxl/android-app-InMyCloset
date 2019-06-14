@@ -1,4 +1,4 @@
-package io.github.xueluwu.android.organizeyourcloset;
+package io.github.xueluwu.android.organizeyourcloset.Menu;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,13 +13,14 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.github.xueluwu.android.organizeyourcloset.R;
+
 
 /**
  * Menu - Feedback
  */
 
 public class MenuFeedbackFragment extends Fragment {
-
     private final static String DEBUG_TAG = "FeedbackFragment";
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,8 +48,19 @@ public class MenuFeedbackFragment extends Fragment {
                     yes_btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Toast.makeText(getActivity(), R.string.thankyou, Toast.LENGTH_LONG).show();
-                            // TODO: set yes_btn.setOnCluckListern to playstore page
+                            final String appPackageName = getActivity().getPackageName();
+                            try {
+                                startActivity(new Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("market://details?id=" + appPackageName)
+                                ));
+                            } catch (android.content.ActivityNotFoundException anfe) {
+                                startActivity(new Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                                appPackageName)
+                                ));
+                            }
                         }
                     });
                     no_btn.setVisibility(View.VISIBLE);
@@ -82,7 +94,6 @@ public class MenuFeedbackFragment extends Fragment {
                             Toast.makeText(getActivity(), R.string.nomaybelater, Toast.LENGTH_LONG).show();
                         }
                     });
-
                 }
             }
         });

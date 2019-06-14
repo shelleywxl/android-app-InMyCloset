@@ -1,4 +1,4 @@
-package io.github.xueluwu.android.organizeyourcloset;
+package io.github.xueluwu.android.organizeyourcloset.Menu;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -14,6 +14,8 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.util.Locale;
+
+import io.github.xueluwu.android.organizeyourcloset.R;
 
 
 /**

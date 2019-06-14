@@ -1,8 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:style="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -22,31 +20,28 @@
             android:paddingLeft="30dp"
             android:paddingRight="30dp">
 
-            <!-- prev button -->
             <ImageView
-                android:id="@+id/calendar_prev_button"
+                android:id="@+id/calendarPrevButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:src="@drawable/ic_keyboard_arrow_left"/>
 
-            <!-- date title -->
             <TextView
-                android:id="@+id/calendar_date_display"
+                android:id="@+id/calendarDateDisplay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/calendar_prev_button"
-                android:layout_toLeftOf="@+id/calendar_next_button"
+                android:layout_toRightOf="@+id/calendarPrevButton"
+                android:layout_toLeftOf="@+id/calendarNextButton"
                 android:gravity="center"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:textColor="#222222"
                 android:text="current date"/>
 
-            <!-- next button -->
             <ImageView
-                android:id="@+id/calendar_next_button"
+                android:id="@+id/calendarNextButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
@@ -54,9 +49,8 @@
                 android:src="@drawable/ic_keyboard_arrow_right"/>
         </RelativeLayout>
 
-        <!-- days header -->
         <LinearLayout
-            android:id="@+id/calendar_header"
+            android:id="@+id/calendarHeader"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
@@ -119,9 +113,8 @@
                 android:text="@string/sat"/>
         </LinearLayout>
 
-        <!-- days view -->
         <GridView
-            android:id="@+id/calendar_grid"
+            android:id="@+id/calendarGrid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:numColumns="7"/>
@@ -133,68 +126,93 @@
         android:background="@color/colorPrimary"
         android:layout_margin="10dp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:layout_weight="2"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/chosen_date_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center" />
+        android:layout_weight="2">
 
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:id="@+id/linearLayoutTexts"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/calendar_add_btn"
-                style="@style/Widget.AppCompat.Button.Borderless"
+            <TextView
+                android:id="@+id/textWhatToWearOn"
+                android:text="@string/whattowear"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="end"
+                android:layout_gravity="end|top"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textCalendarChosenDate"
+                android:hint="@string/selectadate"
+                android:textSize="18sp"
+                android:gravity="start"
+                android:layout_gravity="start|top"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/add"
-                android:textColor="@color/colorPrimaryDarkest"
-                android:theme="@style/FlatButton" />
-
-            <Button
-                android:id="@+id/calendar_delete_btn"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/delete"
-                android:textColor="@color/colorPrimaryDarkest"
-                android:theme="@style/FlatButton" />
-
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <GridView
+            android:id="@+id/gridViewCalendarImage"
+            android:layout_below="@+id/linearLayoutTexts"
+            android:layout_above="@+id/linearLayoutButtons"
+            android:numColumns="3"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+        </GridView>
+
         <View
+            android:layout_below="@+id/gridViewCalendarImage"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutButtons"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/colorPrimary" />
-
-        <GridView
-            android:id="@+id/calendar_image_gridview"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:horizontalSpacing="10dp"
-            android:numColumns="2"
-            android:verticalSpacing="10dp">
+            android:layout_height="wrap_content">
 
-        </GridView>
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonCalendarAdd"
+                android:text="@string/add"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/FlatButton"/>
 
+            <Button
+                android:id="@+id/buttonCalendarDelete"
+                android:text="@string/delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/FlatButton"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

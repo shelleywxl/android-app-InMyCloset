@@ -1,4 +1,4 @@
-package io.github.xueluwu.android.organizeyourcloset;
+package io.github.xueluwu.android.organizeyourcloset.Shop;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import io.github.xueluwu.android.organizeyourcloset.R;
 
 /**
  * ShopFragment

@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.github.xueluwu.android.organizeyourcloset">
 
+    <uses-sdk tools:overrideLibrary="com.amazonaws.mobile.auth.ui" />
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
-
     <supports-screens
-        android:smallScreens="true"
-        android:normalScreens="true"
+        android:anyDensity="true"
         android:largeScreens="true"
-        android:anyDensity="true">
-    </supports-screens>
+        android:normalScreens="true"
+        android:smallScreens="true" />
 
     <application
         android:allowBackup="true"
@@ -26,51 +30,55 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name="io.github.xueluwu.android.organizeyourcloset.MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="io.github.xueluwu.android.organizeyourcloset.ClosetActivity"
+            android:name=".Closet.ClosetActivity"
             android:configChanges="locale|orientation|layoutDirection"
             android:label="@string/closet"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="io.github.xueluwu.android.organizeyourcloset.CalendarActivity"
+            android:name=".Closet.ClosetFilterActivity"
+            android:label="@string/search"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Calendar.CalendarActivity"
             android:configChanges="locale"
             android:label="@string/calendar"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="io.github.xueluwu.android.organizeyourcloset.CalendarAddActivity"
+            android:name=".Calendar.CalendarAddActivity"
             android:configChanges="locale"
-            android:parentActivityName="io.github.xueluwu.android.organizeyourcloset.CalendarActivity"
             android:label="@string/add"
+            android:parentActivityName=".Calendar.CalendarActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="io.github.xueluwu.android.organizeyourcloset.ShopActivity"
+            android:name=".Shop.ShopActivity"
             android:configChanges="locale"
             android:label="@string/shop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="io.github.xueluwu.android.organizeyourcloset.MenuActivity"
+            android:name=".Menu.MenuActivity"
             android:configChanges="locale"
             android:label="@string/menu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="io.github.xueluwu.android.organizeyourcloset.SubmenuActivity"
+            android:name=".Menu.SubmenuActivity"
             android:configChanges="locale"
-            android:parentActivityName="io.github.xueluwu.android.organizeyourcloset.MenuActivity"
             android:label="@string/menu"
+            android:parentActivityName=".Menu.MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="io.github.xueluwu.android.organizeyourcloset.ClosetItemActivity"
+            android:name=".Closet.ClosetItemActivity"
             android:configChanges="locale"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -79,9 +87,8 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
-
     </application>
 
 </manifest>

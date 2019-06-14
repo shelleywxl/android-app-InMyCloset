@@ -1,4 +1,4 @@
-package io.github.xueluwu.android.organizeyourcloset;
+package io.github.xueluwu.android.organizeyourcloset.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import io.github.xueluwu.android.organizeyourcloset.R;
 
 /**
  * CalendarGridViewAdapter
@@ -23,7 +24,6 @@ import java.util.List;
  */
 
 public class CalendarGridViewAdapter extends ArrayAdapter<Date> {
-
     // for view inflation
     private LayoutInflater inflater;
     private List<Date> days;
@@ -42,8 +42,6 @@ public class CalendarGridViewAdapter extends ArrayAdapter<Date> {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-
-        // day in question
         Date date = getItem(position);
 
         SimpleDateFormat dateFormatDay = new SimpleDateFormat("d");
@@ -105,14 +103,12 @@ public class CalendarGridViewAdapter extends ArrayAdapter<Date> {
         // set text
         ((TextView)view).setText(String.valueOf(date.getDate()));
 
-
         // for highlighting selected day to colorPrimaryDarkest
         if (position == mselectedPosition)
             ((TextView)view).setTextColor(getContext().getResources().getColor(R.color.colorPrimaryDarkest));
 
         return view;
     }
-
 
     // for highlighting background of the selected day
     public void setSelectedPosition(int position) {

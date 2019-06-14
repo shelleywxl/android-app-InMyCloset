@@ -6,4 +6,9 @@
         <item>@string/help</item>
         <item>@string/feedback</item>
     </string-array>
+
+    <string-array name="add_photo_array">
+        <item>@string/takeaphoto</item>
+        <item>@string/selectfromgallery</item>
+    </string-array>
 </resources>

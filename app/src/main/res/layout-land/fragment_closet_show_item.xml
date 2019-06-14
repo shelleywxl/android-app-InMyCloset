@@ -3,159 +3,227 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:src="@drawable/notepad"
-        android:tint="@color/colorPrimaryDarkest"
-        android:scaleType="fitXY"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:gravity="center"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" >
 
         <ImageView
-            android:id="@+id/iv_showimg"
+            android:id="@+id/imageShow"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="20dp"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/image_border" />
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4" />
+            android:layout_weight="4"
+            android:layout_marginBottom="100dp"
+            android:scrollbars="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_marginTop="@dimen/detail_margin"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/kind" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:id="@+id/tv_showkind"
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/detail_height"
+                        android:gravity="center"
+                        android:text="@string/kind"
+                        style="@style/CommonText" />
+
+                    <TextView
+                        android:id="@+id/textShowKind"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/detail_height"
+                        android:gravity="center"
+                        android:text="@string/category"
+                        style="@style/CommonText"/>
+
+                    <TextView
+                        android:id="@+id/textShowCategory"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/detail_margin"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/detail_height"
+                        android:gravity="center"
+                        android:text="@string/price"
+                        style="@style/CommonText"/>
+
+                    <TextView
+                        android:id="@+id/textShowPrice"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/detail_height"
+                        android:gravity="center"
+                        android:text="@string/season"
+                        style="@style/CommonText"/>
+
+                    <TextView
+                        android:id="@+id/textShowSeason"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/detail_margin"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/price" />
+                    android:orientation="horizontal">
 
-                <!-- price need to be an integer -->
-                <TextView
-                    android:id="@+id/tv_showprice"
-                    android:layout_weight="2"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/detail_height"
+                        android:gravity="center"
+                        android:text="@string/size"
+                        style="@style/CommonText"/>
+
+                    <TextView
+                        android:id="@+id/textShowSize"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/detail_height"
+                        android:gravity="center"
+                        android:text="@string/brand"
+                        style="@style/CommonText"/>
+
+                    <TextView
+                        android:id="@+id/textShowBrand"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/detail_margin"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/detail_height"
+                        android:gravity="center"
+                        android:text="@string/boughtDate"
+                        style="@style/CommonText"/>
+
+                    <TextView
+                        android:id="@+id/textShowBoughtDate"
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/detail_height"
+                        android:gravity="center"
+                        android:text="@string/owner"
+                        style="@style/CommonText"/>
+
+                    <TextView
+                        android:id="@+id/textShowOwner"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" />
+                </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/category" />
-
-                <TextView
-                    android:id="@+id/tv_showcategory"
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" />
-
-
-                <TextView
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/season" />
-
-                <TextView
-                    android:id="@+id/tv_showseason"
-                    android:layout_weight="2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" />
-            </LinearLayout>
-
-            <View
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryLightest" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_marginRight="20dp"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
-                <Button
-                    android:id="@+id/btn_showok"
-                    android:text="@string/ok"
-                    android:textColor="@color/colorPrimaryDarkest"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/FlatButton"/>
-
-                <Button
-                    android:id="@+id/btn_showedit"
-                    android:text="@string/edit"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    style="@style/NiceButton"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2" />
-        </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="90dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/colorPrimaryLightest" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:id="@+id/buttonShowOk"
+            android:text="@string/ok"
+            android:textColor="@color/colorPrimaryDarkest"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            style="@style/BorderedButton"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/buttonShowEdit"
+            android:text="@string/edit"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/NiceButton"/>
+    </LinearLayout>
 </FrameLayout>

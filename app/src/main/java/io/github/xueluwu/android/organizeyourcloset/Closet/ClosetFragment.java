@@ -1,6 +1,7 @@
-package io.github.xueluwu.android.organizeyourcloset;
+package io.github.xueluwu.android.organizeyourcloset.Closet;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,13 +9,14 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,9 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.Spinner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -33,149 +33,148 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
+import io.github.xueluwu.android.organizeyourcloset.Adapter.GridViewAdapter;
+import io.github.xueluwu.android.organizeyourcloset.DatabaseHandler;
+import io.github.xueluwu.android.organizeyourcloset.Item;
+import io.github.xueluwu.android.organizeyourcloset.R;
 
 import static android.app.Activity.RESULT_OK;
+import static io.github.xueluwu.android.organizeyourcloset.Closet.ClosetFilterActivity.FILTER_FOR_CLOSET_OR_CALENDAR;
+import static io.github.xueluwu.android.organizeyourcloset.Closet.ClosetFilterActivity.INTENT_SELECTED_BRANDS;
+import static io.github.xueluwu.android.organizeyourcloset.Closet.ClosetFilterActivity.INTENT_SELECTED_CATEGORIES;
+import static io.github.xueluwu.android.organizeyourcloset.Closet.ClosetFilterActivity.INTENT_SELECTED_KINDS;
+import static io.github.xueluwu.android.organizeyourcloset.Closet.ClosetFilterActivity.INTENT_SELECTED_OWNERS;
+import static io.github.xueluwu.android.organizeyourcloset.Closet.ClosetFilterActivity.INTENT_SELECTED_SEASONS;
+import static io.github.xueluwu.android.organizeyourcloset.Closet.ClosetFilterActivity.INTENT_SELECTED_SIZES;
 
-public class ClosetFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-
+//public class ClosetFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class ClosetFragment extends Fragment {
     private static final String DEBUG_TAG = "ClosetFragment";
-
     private DatabaseHandler db;
+    private ArrayList<String> selectedKinds, selectedCategories, selectedSeasons;
+    private ArrayList<String> selectedSizes, selectedBrands, selectedOwners;
     private GridView gridView;
     private GridViewAdapter gridAdapter;
     private Bitmap bp;
+    private String mCurrentPhotoPath;
 
-    Spinner spinner1,spinner2;
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        Log.d(DEBUG_TAG, "onCreateView");
-
-        // change the title in the toolbar
+    public View onCreateView(
+            LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState
+    ) {
         getActivity().setTitle(io.github.xueluwu.android.organizeyourcloset.R.string.closet);
-
         setHasOptionsMenu(true);
-        return inflater.inflate(io.github.xueluwu.android.organizeyourcloset.R.layout.fragment_closet, container, false);
+
+        return inflater.inflate(R.layout.fragment_closet, container, false);
     }
 
-    //ActionBar Button Logic:
+    //ActionBar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.ac_add:
+                showAddPhotoDialog();
+                break;
+            case R.id.ac_filter:
+                Intent intent = new Intent(getActivity(), ClosetFilterActivity.class);
+                intent.putExtra(FILTER_FOR_CLOSET_OR_CALENDAR, "closet");
+                intent.putStringArrayListExtra(INTENT_SELECTED_KINDS, selectedKinds);
+                intent.putStringArrayListExtra(INTENT_SELECTED_CATEGORIES, selectedCategories);
+                intent.putStringArrayListExtra(INTENT_SELECTED_SEASONS, selectedSeasons);
+                intent.putStringArrayListExtra(INTENT_SELECTED_SIZES, selectedSizes);
+                intent.putStringArrayListExtra(INTENT_SELECTED_BRANDS, selectedBrands);
+                intent.putStringArrayListExtra(INTENT_SELECTED_OWNERS, selectedOwners);
+                startActivity(intent);
+                break;
+        }
 
-        int id= item.getItemId();
-        //ActionBar Click handling
-        if(id== io.github.xueluwu.android.organizeyourcloset.R.id.ac_camera) {
-            callCamera();
-        }
-        if(id== io.github.xueluwu.android.organizeyourcloset.R.id.ac_gallery) {
-            callGallery();
-        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(io.github.xueluwu.android.organizeyourcloset.R.menu.action_bar,menu);
+        inflater.inflate(io.github.xueluwu.android.organizeyourcloset.R.menu.closet_action_bar,menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        // super.onActivityCreated(savedInstanceState);
-
-        spinner1 = getView().findViewById(io.github.xueluwu.android.organizeyourcloset.R.id.spinner1);
-        spinner2 = getView().findViewById(io.github.xueluwu.android.organizeyourcloset.R.id.spinner2);
-        ArrayAdapter adapter1 = ArrayAdapter.createFromResource(getActivity(), io.github.xueluwu.android.organizeyourcloset.R.array.Kind, android.R.layout.simple_spinner_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner1.setAdapter(adapter1);
-        spinner1.setOnItemSelectedListener(this);
+        Intent intent = getActivity().getIntent();
+        selectedKinds = intent.getStringArrayListExtra(INTENT_SELECTED_KINDS);
+        if (selectedKinds == null) {
+            selectedKinds = new ArrayList<>();
+        }
+        selectedCategories = intent.getStringArrayListExtra(INTENT_SELECTED_CATEGORIES);
+        if (selectedCategories == null) {
+            selectedCategories = new ArrayList<>();
+        }
+        selectedSeasons = intent.getStringArrayListExtra(INTENT_SELECTED_SEASONS);
+        if (selectedSeasons == null) {
+            selectedSeasons = new ArrayList<>();
+        }
+        selectedSizes = intent.getStringArrayListExtra(INTENT_SELECTED_SIZES);
+        if (selectedSizes == null) {
+            selectedSizes = new ArrayList<>();
+        }
+        selectedBrands = intent.getStringArrayListExtra(INTENT_SELECTED_BRANDS);
+        if (selectedBrands == null) {
+            selectedBrands = new ArrayList<>();
+        }
+        selectedOwners = intent.getStringArrayListExtra(INTENT_SELECTED_OWNERS);
+        if (selectedOwners == null) {
+            selectedOwners = new ArrayList<>();
+        }
 
         db = new DatabaseHandler(getActivity());
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        Log.d(DEBUG_TAG, "onStart");
-
-        // for category spinner
-        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String sp2 = String.valueOf(spinner2.getSelectedItem());
-                if(!sp2.equals("All") && !sp2.equals("全部")) {
-                    showRecords("", sp2);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // do nothing
-            }
-        });
+        showRecords(
+                selectedKinds,
+                selectedCategories,
+                selectedSeasons,
+                selectedSizes,
+                selectedBrands,
+                selectedOwners
+        );
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
-
     }
 
-    // for kind spinner
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-        switch(adapterView.getId()) {
-
-            case io.github.xueluwu.android.organizeyourcloset.R.id.spinner1:
-
-                String sp1 = String.valueOf(spinner1.getSelectedItem());
-                showRecords(sp1, "All");
-
-                if (sp1.contentEquals("All") || sp1.contentEquals("全部")) {
-
-                    spinner2.setEnabled(false);
+    private void showAddPhotoDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setItems(R.array.add_photo_array, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case (0):
+                        callCamera();
+                        break;
+                    case (1):
+                        callGallery();
+                        break;
                 }
-                if (sp1.contentEquals("Top") || sp1.contentEquals("上装")) {
-                    spinner2.setEnabled(true);
-                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(getActivity(), io.github.xueluwu.android.organizeyourcloset.R.array.Top, android.R.layout.simple_spinner_item);
-                    spinner2.setAdapter(adapter2);
-                }
-                if (sp1.contentEquals("Bottom") || sp1.contentEquals("下装")) {
-                    spinner2.setEnabled(true);
-                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(getActivity(), io.github.xueluwu.android.organizeyourcloset.R.array.Bottom, android.R.layout.simple_spinner_item);
-                    spinner2.setAdapter(adapter2);
-                }
-                if (sp1.contentEquals("Footwear") || sp1.contentEquals("鞋类")) {
-                    spinner2.setEnabled(true);
-                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(getActivity(), io.github.xueluwu.android.organizeyourcloset.R.array.Footwear, android.R.layout.simple_spinner_item);
-                    spinner2.setAdapter(adapter2);
-                }
-                if (sp1.contentEquals("Accessories") || sp1.contentEquals("配饰")) {
-                    spinner2.setEnabled(true);
-                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(getActivity(), io.github.xueluwu.android.organizeyourcloset.R.array.Accessories, android.R.layout.simple_spinner_item);
-                    spinner2.setAdapter(adapter2);
-                }
-        }
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-        //Do nothing
-    }
-
-
-    public void callGallery(){
+    private void callGallery(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, 2);
     }
 
-    public void callCamera() {
+    private void callCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -186,19 +185,17 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
                 Log.d(DEBUG_TAG, "IOException");
             }
             // continue only if the File was successfully created
-            Log.d(DEBUG_TAG, "callCamera, continued after the File was created");
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(getActivity(), "io.github.xueluwu.android.organizeyourcloset.fileprovider", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(
+                        getActivity(),
+                        "io.github.xueluwu.android.organizeyourcloset.fileprovider",
+                        photoFile
+                );
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(cameraIntent, 1);
             }
         }
     }
-
-
-    String imgPath;
-
-    String mCurrentPhotoPath;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -216,17 +213,16 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
         return image;
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == 1 && resultCode == RESULT_OK) {
-
             Bitmap yourImage = decodeFile(mCurrentPhotoPath, 400);
             // Photos rotate in some devices, rotate back
             try {
                 ExifInterface ei = new ExifInterface(mCurrentPhotoPath);
-                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+                int orientation = ei.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED
+                );
                 //                    Bitmap rotateBitmap = null;
                 switch (orientation) {
                     case ExifInterface.ORIENTATION_ROTATE_90:
@@ -253,54 +249,49 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
             yourImage.compress(Bitmap.CompressFormat.JPEG, 20, stream);
             byte byteArray1[] = stream.toByteArray();
 
-            Intent intent1 = new Intent(getActivity(), ClosetItemActivity.class);
-            intent1.putExtra("image", byteArray1);
-            intent1.putExtra("add_show_edit", "add");
-            startActivity(intent1);
-
+            Intent intent = new Intent(getActivity(), ClosetItemActivity.class);
+            intent.putExtra("image", byteArray1);
+            intent.putExtra("add_show_edit", "add");
+            startActivity(intent);
         } else if (requestCode == 2 && resultCode == RESULT_OK) {
-
             Uri choosenImage = data.getData();
-
             if(choosenImage !=null){
-
                 bp=decodeUri(choosenImage, 400);
                 //image = profileImage(bp);   // image in byte[], passed to AddItemActivity
-
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bp.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                 byte[] byteArray2 = stream.toByteArray();
 
-                Intent intent2 = new Intent(getActivity(), ClosetItemActivity.class);
-                intent2.putExtra("image", byteArray2);
-                intent2.putExtra("add_show_edit", "add");
-                startActivity(intent2);
-
+                Intent intent = new Intent(getActivity(), ClosetItemActivity.class);
+                intent.putExtra("image", byteArray2);
+                intent.putExtra("add_show_edit", "add");
+                startActivity(intent);
             }
         }
     }
 
-
     // Rotate the bitmap
-    public static Bitmap rotateImage(Bitmap source, float angle) {
+    private static Bitmap rotateImage(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+        return Bitmap.createBitmap(
+                source, 0, 0, source.getWidth(), source.getHeight(), matrix, true
+        );
     }
 
-
     //Convert and resize our image to 400dp for faster uploading our images to DB
-    public Bitmap decodeUri(Uri selectedImage, int REQUIRED_SIZE) {
-
+    private Bitmap decodeUri(Uri selectedImage, int REQUIRED_SIZE) {
         try {
-
             // Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(selectedImage), null, o);
+            BitmapFactory.Options option = new BitmapFactory.Options();
+            option.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(
+                    getActivity().getContentResolver().openInputStream(selectedImage),
+                    null,
+                    option);
 
             // Find the correct scale value. It should be the power of 2.
-            int width_tmp = o.outWidth, height_tmp = o.outHeight;
+            int width_tmp = option.outWidth, height_tmp = option.outHeight;
             int scale = 1;
             while (true) {
                 if (width_tmp / 2 < REQUIRED_SIZE
@@ -315,7 +306,11 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
             // Decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();
             o2.inSampleSize = scale;
-            return BitmapFactory.decodeStream(getActivity().getApplicationContext().getContentResolver().openInputStream(selectedImage), null, o2);
+            return BitmapFactory.decodeStream(
+                    getActivity().getApplicationContext().getContentResolver().openInputStream(selectedImage),
+                    null,
+                    o2
+            );
         }
         catch (Exception e){
             e.printStackTrace();
@@ -323,9 +318,8 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
         return null;
     }
 
-
     // convert photo path to Bitmap
-    public Bitmap decodeFile(String path, int REQUIRED_SIZE) {
+    private Bitmap decodeFile(String path, int REQUIRED_SIZE) {
         try {
             // Decode image size
             BitmapFactory.Options o = new BitmapFactory.Options();
@@ -347,7 +341,6 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
         return null;
     }
 
-
     //Convert bitmap to bytes
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     private byte[] profileImage(Bitmap b){
@@ -356,27 +349,31 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
         return bos.toByteArray();
     }
 
-
     //Retrieve data from the database and set to the grid view
-    private void showRecords(String kind, String category){  //change to gridView
-        ArrayList<Item> itemArray = new ArrayList<Item>();
-        List<Item> items = db.getAllItems(kind, category);
-        for (Item item : items) {
-            itemArray.add(item);
-        }
+    private void showRecords(
+            ArrayList<String> selectedKinds,
+            ArrayList<String> selectedCategories,
+            ArrayList<String> selectedSeasons,
+            ArrayList<String> selectedSizes,
+            ArrayList<String> selectedBrands,
+            ArrayList<String> selectedOwners
+    ){
+        ArrayList<Item> items = db.getAllItems(
+                selectedKinds,
+                selectedCategories,
+                selectedSeasons,
+                selectedSizes,
+                selectedBrands,
+                selectedOwners
+        );
 
         gridView = (GridView) getActivity().findViewById(R.id.gridview);
-
-        gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, itemArray);
+        gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, items);
         gridView.setAdapter(gridAdapter);
-
-        // set click listener for each image in the grid view, will open ShowItemFragment
-
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 Item item = (Item) parent.getItemAtPosition(position);
-                // pass the item id as an intent to ClosetItemActivity
                 Intent intent = new Intent(getActivity(), ClosetItemActivity.class);
                 intent.putExtra("item_id", item.getID());
                 intent.putExtra("add_show_edit", "show");
@@ -384,5 +381,4 @@ public class ClosetFragment extends Fragment implements AdapterView.OnItemSelect
             }
         });
     }
-
 }

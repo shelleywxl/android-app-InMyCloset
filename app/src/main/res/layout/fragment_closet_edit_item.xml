@@ -3,166 +3,277 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:src="@drawable/notepad"
-        android:tint="@color/colorPrimaryDarkest"
-        android:scaleType="fitXY"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp" >
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+        android:layout_marginBottom="100dp"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="vertical"
-
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp" >
+            android:layout_height="match_parent"
+            android:layout_margin="30dp"
+            android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/iv_showimg"
-                android:background="@drawable/image_border"
-                android:layout_gravity="center"
+                android:id="@+id/image"
                 android:layout_width="150dp"
-                android:layout_height="150dp" />
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:background="@drawable/image_border" />
 
             <LinearLayout
-                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/detail_height"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="@string/kind"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    style="@style/CommonText"/>
 
                 <Spinner
-                    android:id="@+id/sp_editkind"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:id="@+id/spinnerEditKind"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_margin"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/detail_height"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="@string/category"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    style="@style/CommonText"/>
 
                 <Spinner
-                    android:id="@+id/sp_editcategory"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:id="@+id/spinnerEditCategory"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_margin"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/price"
-                    android:gravity="center"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="@dimen/detail_height"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/price"
+                    style="@style/CommonText"/>
 
                 <!-- price need to be an integer -->
                 <EditText
-                    android:id="@+id/et_editprice"
-                    android:inputType="number"
+                    android:id="@+id/textEditPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-
+                    android:inputType="number" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_margin"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/season"
-                    android:gravity="center"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="@dimen/detail_height"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/season"
+                    style="@style/CommonText"/>
 
                 <Spinner
-                    android:id="@+id/sp_editseason"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:id="@+id/spinnerEditSeason"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
             </LinearLayout>
-
-            <View
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryLightest" />
-
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_margin"
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_editdelete"
-                    android:text="@string/delete"
-                    android:textColor="@color/colorPrimaryDarkest"
-                    android:layout_gravity="center"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/detail_height"
                     android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/size"
+                    style="@style/CommonText"/>
+
+                <EditText
+                    android:id="@+id/textEditSize"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/FlatButton"/>
-
-                <Button
-                    android:id="@+id/btn_editsave"
-                    android:text="@string/save"
-                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    style="@style/NiceButton"/>
-
+                    android:gravity="center" />
             </LinearLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/flexboxLayoutSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                app:alignContent="stretch"
+                android:visibility="gone">
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/detail_height"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/brand"
+                    style="@style/CommonText"/>
+
+                <EditText
+                    android:id="@+id/textEditBrand"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/flexboxLayoutBrand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                app:alignContent="stretch"
+                android:visibility="gone">
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/detail_height"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/boughtDate"
+                    style="@style/CommonText"/>
+
+                <EditText
+                    android:id="@+id/textEditBoughtDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/detail_height"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/owner"
+                    style="@style/CommonText"/>
+
+                <EditText
+                    android:id="@+id/textEditOwner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/flexboxLayoutOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:alignItems="stretch"
+                app:alignContent="stretch"
+                android:visibility="gone">
+            </com.google.android.flexbox.FlexboxLayout>
         </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <View
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="90dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimaryLightest" />
+
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/buttonEditDelete"
+            android:text="@string/delete"
+            android:textColor="@color/colorPrimaryDarkest"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:minHeight="50dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            style="@style/BorderedButton"/>
+
+        <Button
+            android:id="@+id/buttonEditSave"
+            android:text="@string/save"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            style="@style/NiceButton"/>
     </LinearLayout>
 </FrameLayout>

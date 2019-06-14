@@ -18,70 +18,38 @@
 
     <LinearLayout
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/calendar_add_chosen_date_tv"
+            android:id="@+id/textCalendarAddChosenDate"
+            android:textSize="18sp"
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/calendar_add_add_btn"
+            android:id="@+id/buttonCalendarAddSearch"
+            android:text="@string/search"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/NiceButton"/>
+
+        <Button
+            android:id="@+id/buttonCalendarAddAdd"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/add"
             android:layout_gravity="center"
             style="@style/NiceButton"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="kind"
-            android:gravity="left"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="category"
-            android:gravity="left"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Spinner
-            android:id="@+id/spinner11"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Spinner
-            android:id="@+id/spinner22"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            tools:ignore="UnknownId" />
-
     </LinearLayout>
 
     <View
@@ -91,11 +59,10 @@
         android:background="@color/colorPrimary" />
 
     <GridView
-        android:id="@+id/calendar_add_gridview"
+        android:id="@+id/gridViewCalendarAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:horizontalSpacing="5dp"
         android:numColumns="3"
         android:verticalSpacing="10dp" />
-
 </LinearLayout>

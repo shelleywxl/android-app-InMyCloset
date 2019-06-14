@@ -5,29 +5,25 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 /**
- * DatabaseHandler
+ * Two databases: one for all closet items, and one for calendar.
  */
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-
-    // Database Version
     private static final int DATABASE_VERSION = 1;
-
-    // Database Name
     private static final String DATABASE_NAME = "itemsManager";
 
-    // Table names
-    // TABLE_ITEMS for closet, TABLE_WORN for calendar
+    // Table name: TABLE_ITEMS for closet, TABLE_WORN for calendar
     private static final String TABLE_ITEMS = "items";
     private static final String TABLE_WORN = "worn";
 
-    // Table Columns names
+    // Table Columns
     // TABLE_ITEMS
     private static final String KEY_ID = "_id";
     private static final String KEY_IMAGE = "image";
@@ -35,84 +31,95 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_CATEGORY = "category";
     private static final String KEY_PRICE = "price";
     private static final String KEY_SEASON = "season";
+    private static final String KEY_SIZE = "size";
+    private static final String KEY_BRAND = "brand";
+    private static final String KEY_OWNER = "owner";
+    private static final String KEY_BOUGHT_DATE = "boughtDate";
     // TABLE_WORN
     private static final String KEY_ITEMID = "id";
     private static final String KEY_DATE = "Date";
-
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-
-    //Create tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_ITEMS + "("
                 + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + KEY_IMAGE  + " BLOB, "
                 + KEY_KIND + " TEXT, "
                 + KEY_CATEGORY + " TEXT, "
                 + KEY_PRICE + " UNSIGNED, "
-                + KEY_SEASON + " TEXT);");
+                + KEY_SEASON + " TEXT, "
+                + KEY_SIZE + " TEXT, "
+                + KEY_BRAND + " TEXT, "
+                + KEY_OWNER + " TEXT, "
+                + KEY_BOUGHT_DATE + " TEXT);");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_WORN +"("
                 + KEY_ITEMID + " INTEGER, "
                 + KEY_DATE + " TEXT);");
-
     }
 
-
-    // Upgrade database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORN);
         onCreate(db);
     }
 
-
-    // Add items in TABLE_ITEMS
-    // Used in ClosetAddItem
-    // Return a boolean, true -> successfully inserted, false -> not inserted
-    public boolean addItem(Item item){   //addContacts(Item contact)
+    /**
+     *
+     * @param item the item which is to be added.
+     * @return true if item successfully inserted, false if failed.
+     */
+    public boolean addItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values=new ContentValues();
+        ContentValues values = new ContentValues();
 
         values.put(KEY_IMAGE, item.getImage());
         values.put(KEY_KIND, item.getKind());
         values.put(KEY_CATEGORY, item.getCategory());
         values.put(KEY_PRICE, item.getPrice());
         values.put(KEY_SEASON, item.getSeason());
+        values.put(KEY_SIZE, item.getSize());
+        values.put(KEY_BRAND, item.getBrand());
+        values.put(KEY_OWNER, item.getOwner());
+        values.put(KEY_BOUGHT_DATE, item.getBoughtDate());
 
         long result = db.insert(TABLE_ITEMS, null, values);
         db.close();
         return (result != -1);
     }
 
+    // Get all items from TABLE_ITEMS; Used for showing images in the gridview
+    public ArrayList<Item> getAllItems(
+            ArrayList<String> kinds,
+            ArrayList<String> categories,
+            ArrayList<String> seasons,
+            ArrayList<String> sizes,
+            ArrayList<String> brands,
+            ArrayList<String> owners) {
+        ArrayList<Item> itemList = new ArrayList<Item>();
 
-    // Get all items from TABLE_ITEMS
-    // Used for showing images in the gridview
-    public List<Item> getAllItems(String kind, String category)
-    {
-        List<Item> itemList = new ArrayList<Item>();
-
-        String selectQuery;
-        if (kind.equals("All") || kind.equals("全部")) { // Select All Query
-            selectQuery = "SELECT  * FROM " + TABLE_ITEMS;
-        } else if (category.equals("All")){
-            selectQuery = "SELECT  * FROM " + TABLE_ITEMS + " WHERE " + KEY_KIND + " = '" + kind + "'";
-        } else {
-            selectQuery = "SELECT  * FROM " + TABLE_ITEMS +
-                    " WHERE " + KEY_CATEGORY + " = '" + category + "'";
+        String selectQuery = "SELECT  * FROM " + TABLE_ITEMS;
+        if (!(kinds.isEmpty() && categories.isEmpty() && seasons.isEmpty() && sizes.isEmpty() &&
+                brands.isEmpty() && owners.isEmpty())) {
+            selectQuery += " WHERE ";
+            selectQuery = addFilterQuery(selectQuery, kinds, KEY_KIND);
+            selectQuery = addFilterQuery(selectQuery, categories, KEY_CATEGORY);
+            selectQuery = addFilterQuery(selectQuery, seasons, KEY_SEASON);
+            selectQuery = addFilterQuery(selectQuery, sizes, KEY_SIZE);
+            selectQuery = addFilterQuery(selectQuery, brands, KEY_BRAND);
+            selectQuery = addFilterQuery(selectQuery, owners, KEY_OWNER);
+            selectQuery = selectQuery.substring(0, selectQuery.length() - 5);
         }
+        Log.d("Shelley", selectQuery);
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
+        // Go through all rows and add to list.
         if (cursor.moveToFirst()) {
             do {
                 Item item = new Item();
@@ -122,37 +129,51 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 item.setCategory(cursor.getString(3));
                 item.setPrice(Integer.parseInt(cursor.getString(4)));
                 item.setSeason(cursor.getString(5));
+                item.setSize(cursor.getString(6));
+                item.setBrand(cursor.getString(7));
+                item.setOwner(cursor.getString(8));
+                item.setBoughtDate(cursor.getString(9));
 
-                // Adding item to list
                 itemList.add(item);
             } while (cursor.moveToNext());
         }
+
         return itemList;
     }
 
+    private String addFilterQuery(String selectQuery, ArrayList<String> selectedList, String columnKey) {
+        if (!selectedList.isEmpty()) {
+            selectQuery += "(";
+            for (String selectValue : selectedList) {
+                selectQuery += columnKey + " = '" + selectValue + "' OR ";
+            }
+            selectQuery = selectQuery.substring(0, selectQuery.length() - 4) + ") AND ";
+        }
+        return selectQuery;
+    }
 
-    // Update a single item in TABLE_ITEMS
-    // Used in ClosetEditItem
+    // Update a single item in TABLE_ITEMS; Used in ClosetEditItem.
     public boolean updateItem(Item item, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(KEY_IMAGE, item.getImage());
         values.put(KEY_KIND, item.getKind());
         values.put(KEY_CATEGORY, item.getCategory());
         values.put(KEY_PRICE, item.getPrice());
         values.put(KEY_SEASON, item.getSeason());
+        values.put(KEY_SIZE, item.getSize());
+        values.put(KEY_BRAND, item.getBrand());
+        values.put(KEY_OWNER, item.getOwner());
+        values.put(KEY_BOUGHT_DATE, item.getBoughtDate());
 
-        // updating row
-        db.update(TABLE_ITEMS, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(id) });
+        db.update(
+                TABLE_ITEMS, values, KEY_ID + " = ?", new String[] {String.valueOf(id)}
+                );
 
         return true;
     }
 
-
     // Delete a single item in TABLE_ITEMS, also delete in TABLE_WORN
-    // Used in ClosetEditItem
     public void deleteItem(int Id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ITEMS, KEY_ID + " = ?", new String[] { String.valueOf(Id) });
@@ -160,8 +181,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-
-    // ----------
     // Add items in TABLE_WORN
     // Used in CalendarAdd
     public void addInWorn(Integer itemid, String date) {
@@ -172,7 +191,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_WORN,null,values);
         db.close();
     }
-
 
     // Get all items with the chosen date from TABLE_WORN
     // Used in Calendar
@@ -239,21 +257,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Item getOneItem(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_ITEMS,
-                new String[] {KEY_ID, KEY_IMAGE, KEY_KIND, KEY_CATEGORY, KEY_PRICE, KEY_SEASON},
+        Cursor cursor = db.query(
+                TABLE_ITEMS,
+                new String[] {KEY_ID, KEY_IMAGE, KEY_KIND, KEY_CATEGORY, KEY_PRICE, KEY_SEASON,
+                        KEY_SIZE, KEY_BRAND, KEY_OWNER, KEY_BOUGHT_DATE},
                 KEY_ID + "=?", new String[] {String.valueOf(id)},
-                null, null, null, null);
+                null, null, null, null
+        );
 
         Item item = new Item();
 
         if (cursor != null && cursor.moveToFirst()) {
-
             item.setID(Integer.parseInt(cursor.getString(0)));
             item.setImage(cursor.getBlob(1));
             item.setKind(cursor.getString(2));
             item.setCategory(cursor.getString(3));
             item.setPrice(Integer.parseInt(cursor.getString(4)));
             item.setSeason(cursor.getString(5));
+            item.setSize(cursor.getString(6));
+            item.setBrand(cursor.getString(7));
+            item.setOwner(cursor.getString(8));
+            item.setBoughtDate(cursor.getString(9));
 
             cursor.close();
         }
@@ -261,6 +285,61 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return item;
     }
 
+    public String[] getExistedKinds() {
+        ArrayList<String> existedKindsList = getUniqueValueList(KEY_KIND, 2);
+        existedKindsList.remove("");
+        return existedKindsList.toArray(new String[existedKindsList.size()]);
+    }
+
+    public String[] getExistedCategories() {
+        ArrayList<String> existedCategoriesList = getUniqueValueList(KEY_CATEGORY, 3);
+        existedCategoriesList.remove("");
+        return existedCategoriesList.toArray(new String[existedCategoriesList.size()]);
+    }
+
+    public String[] getExistedSeasons() {
+        ArrayList<String> existedSeasonsList = getUniqueValueList(KEY_SEASON, 5);
+        existedSeasonsList.remove("");
+        return existedSeasonsList.toArray(new String[existedSeasonsList.size()]);
+    }
+
+    public String[] getExistedSizes() {
+        ArrayList<String> existedSizesList = getUniqueValueList(KEY_SIZE, 6);
+        existedSizesList.remove("");
+        return existedSizesList.toArray(new String[existedSizesList.size()]);
+    }
+
+    public String[] getExistedBrands() {
+        ArrayList<String> existedBrandsList = getUniqueValueList(KEY_BRAND, 7);
+        existedBrandsList.remove("");
+        return existedBrandsList.toArray(new String[existedBrandsList.size()]);
+    }
+
+    public String[] getExistedOwners() {
+        ArrayList<String> existedOwnersList = getUniqueValueList(KEY_OWNER, 8);
+        existedOwnersList.remove("");
+        return existedOwnersList.toArray(new String[existedOwnersList.size()]);
+    }
+
+    private ArrayList<String> getUniqueValueList(String columnName, int columnIndex) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                true,
+                TABLE_ITEMS,
+                new String[] {KEY_ID, KEY_IMAGE, KEY_KIND, KEY_CATEGORY, KEY_PRICE, KEY_SEASON,
+                        KEY_SIZE, KEY_BRAND, KEY_OWNER, KEY_BOUGHT_DATE},
+                null, null, columnName, null, null, null
+        );
+
+        ArrayList<String> uniqueValueList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                uniqueValueList.add(cursor.getString(columnIndex));
+            } while (cursor.moveToNext());
+        }
+
+        return uniqueValueList;
+    }
 
     // Get the total count of items in the chosen kind
     // Used in MenuStatistics
@@ -276,9 +355,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
         cursor.close();
+
         return count;
     }
-
 
     // Get sum of price value of the chosen kind kind
     // Used in MenuStatistics
@@ -296,7 +375,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             return cursor.getInt(0);
         }
+
         return 0;
     }
-
 }

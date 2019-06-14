@@ -3,62 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <View
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="20dp" />
-
-        <TextView
-            android:text="@string/kind"
-            android:gravity="left"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="@string/category"
-            android:gravity="left"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            tools:ignore="UnknownId" />
-
-        <View
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="20dp" />
-
-    </LinearLayout>
-
-
-    <View
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorPrimaryLightest" />
-
+    android:orientation="vertical"
+    android:layout_margin="20dp">
 
     <GridView
         android:id="@+id/gridview"

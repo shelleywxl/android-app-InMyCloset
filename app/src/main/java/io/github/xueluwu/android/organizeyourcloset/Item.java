@@ -1,65 +1,145 @@
 package io.github.xueluwu.android.organizeyourcloset;
 
 /**
- * Item class
+ * Item in the closet.
  */
 
 public class Item {
+    private int id;
+    private byte[] image;
+    private String kind;
+    private String category;
+    private int price;
+    private String season;
+    private String size;
+    private String brand;
+    private String owner;
+    private String boughtDate;
 
-    //private variables
-    int _id;
-    byte[] _img;
-    String _kind;
-    String _category;
-    int _price;
-    String _season;
-
-    // Empty constructor
-    public Item(){
-
+    public Item() {
     }
 
-    // constructor
-    public Item(int id, byte[] img, String kind, String category, int price, String season) {
-        this._id = id;
-        this._img = img;
-        this._kind = kind;
-        this._category = category;
-        this._price = price;
-        this._season = season;
+    public Item(
+            int id,
+            byte[] img,
+            String kind,
+            String category,
+            int price,
+            String season,
+            String size,
+            String brand,
+            String owner,
+            String boughtDate) {
+        this.id = id;
+        this.image = img;
+        this.kind = kind;
+        this.category = category;
+        this.price = price;
+        this.season = season;
+        this.size = size;
+        this.brand = brand;
+        this.owner = owner;
+        this.boughtDate = boughtDate;
     }
 
-    // constructor
-    public Item(byte[] img, String kind, String category, int price, String season) {
-        this._img = img;
-        this._kind = kind;
-        this._category = category;
-        this._price = price;
-        this._season = season;
+    public Item(
+            byte[] img,
+            String kind,
+            String category,
+            int price,
+            String season,
+            String size,
+            String brand,
+            String owner,
+            String boughtDate) {
+        this.image = img;
+        this.kind = kind;
+        this.category = category;
+        this.price = price;
+        this.season = season;
+        this.size = size;
+        this.brand = brand;
+        this.owner = owner;
+        this.boughtDate = boughtDate;
     }
 
-    // getting ID
-    public int getID() { return this._id; }
-
-    // setting id
-    public void setID(int id) { this._id = id; }
-
-
-    public byte[] getImage() { return this._img; }
-    public void setImage(byte[] b){
-        this._img=b;
+    public int getID() {
+        return id;
     }
 
-    public String getKind() { return this._kind; }
-    public void setKind(String kind) { this._kind = kind; }
+    public void setID(int id) {
+        this.id = id;
+    }
 
-    public String getCategory() { return this._category; }
-    public void setCategory(String category) { this._category = category; }
+    public byte[] getImage() {
+        return image;
+    }
 
-    public int getPrice() { return this._price; }
-    public void setPrice(int price) { this._price = price; }
+    public void setImage(byte[] b) {
+        this.image = b;
+    }
 
-    public String getSeason() { return this._season; }
-    public void setSeason(String season) { this._season = season; }
+    public String getKind() {
+        return kind;
+    }
 
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public void setSeason(String season) {
+        this.season = season;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getBoughtDate() {
+        return boughtDate;
+    }
+
+    public void setBoughtDate(String boughtDate) {
+        this.boughtDate = boughtDate;
+    }
 }

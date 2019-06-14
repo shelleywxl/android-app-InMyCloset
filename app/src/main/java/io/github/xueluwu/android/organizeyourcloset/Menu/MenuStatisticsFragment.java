@@ -1,4 +1,4 @@
-package io.github.xueluwu.android.organizeyourcloset;
+package io.github.xueluwu.android.organizeyourcloset.Menu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.Locale;
+
+import io.github.xueluwu.android.organizeyourcloset.DatabaseHandler;
+import io.github.xueluwu.android.organizeyourcloset.R;
 
 
 /**

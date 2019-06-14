@@ -1,4 +1,4 @@
-package io.github.xueluwu.android.organizeyourcloset;
+package io.github.xueluwu.android.organizeyourcloset.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+
+import io.github.xueluwu.android.organizeyourcloset.Item;
+import io.github.xueluwu.android.organizeyourcloset.R;
 
 
 public class GridViewAdapter extends ArrayAdapter {
@@ -61,5 +64,9 @@ public class GridViewAdapter extends ArrayAdapter {
 
     public void setSelectedPosition(int position) {
         mSelectedPosition = position;
+    }
+
+    public void setUnselectedPosition() {
+        mSelectedPosition = -1;
     }
 }
